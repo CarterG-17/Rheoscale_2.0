@@ -1,0 +1,178 @@
+from dataclasses import dataclass, field, replace, fields
+from typing import Optional, Dict, Literal, Union, ClassVar,  get_origin, get_args, TypeAlias
+from types import MappingProxyType
+import os, pandas as pd
+
+#interal keys
+Number = Union[int, float]
+NumericFieldDict: TypeAlias = dict[str,None | Number]
+
+ColumnKey = Literal[
+    "position",
+    "substitution",
+    "value",
+    "error"
+
+]
+
+class FixedKeysDict(dict):
+    def __setitem__(self, key, value):
+        if key not in self:
+            raise KeyError(f"Key '{key}' cannot be added")
+        super().__setitem__(key, value)
+
+@dataclass (frozen=True)
+class RheoscaleConfig:
+    input_file_name: Optional[str] = None
+    number_of_positions: Optional[int]= None
+    log_scale: Optional[bool] = False
+    WT_val: Optional[float] = None 
+    WT_error: Optional[float] = None 
+    WT_name: str = 'WT'
+    
+    
+    min_val: Optional[float] = None
+    max_val: Optional[float] = None 
+    error_val: Optional[float] = None
+    number_of_bins: Optional[int] = None
+    dead_extremum: Literal["Min", "Max"]= "Min"
+    neutral_binsize: Optional[float] = None
+    output_dir: str ="current_dir"
+    output_folder_name_prefix: str=''
+    
+    _true_min: float= None
+    _true_max: float= None
+    '''
+    potential bug is having WT val and error val at the same time'''
+
+    # Threshold defaults
+    enhancing_threshold: ClassVar[float]= 0.8
+    neutral_threshold: ClassVar[float]= 0.7
+    rheostat_threshold: ClassVar[float]= 0.5
+    toggle_threshold: ClassVar[float]= 0.64
+    
+    columns: Dict[ColumnKey, str] = field(
+        default_factory=lambda: MappingProxyType({
+            "position": "Position",
+            "substitution": 'Substitution',
+            "value": 'Value',
+            "error": 'Error'
+        })
+    )
+
+
+
+    def __post_init__(self):
+        self._validate_input_file()
+        self._validate_thresholds()
+        self._validate_bins()
+        self._validate_num_pos()
+        self._validate_output()
+        self._validate_WT()
+        
+    def _validate_WT(self):
+        if self.WT_val is None and self.WT_error is None:
+            pass
+        elif self.WT_error is not None and self.WT_val is not None:
+            pass
+        elif self.WT_val is not None and self.WT_name is None:
+            pass
+        elif self.WT_val is None and self.WT_name is not None:
+            pass
+        else:
+            raise ValueError('if the WT_val AND WT_error must be entered together') 
+
+    def _validate_input_file(self):
+        if self.input_file_name is not None:
+            is_path = os.path.exists(self.input_file_name)
+            if is_path and self.input_file_name.endswith('.csv'):
+                pass
+            else:
+                raise FileNotFoundError(f'the path {self.input_file_name} was not found')
+    
+
+    def _validate_bins(self):
+        if self.number_of_bins is not None:
+            if self.number_of_bins > 20 or self.number_of_bins <=1:
+                raise ValueError(f"you entered a number_of_bins = {self.number_of_bins}, you must have at least 2 bins and no more than 20")
+    
+
+    def _validate_thresholds(self):
+        for name in (
+            "enhancing_threshold",
+            "neutral_threshold",
+            "rheostat_threshold",
+            "toggle_threshold",
+        ):
+            value = getattr(self, name)
+            if not (0.0 <= value <= 1.0):
+                raise ValueError(
+                    f"{name} must be between 0 and 1 inclusive, got {value}"
+                )
+            
+    def _validate_num_pos(self):
+        if self.number_of_positions is not None:
+            if self.number_of_positions <1:
+                raise ValueError('you must analyse at least one position')
+
+    def _validate_output(self):
+        if self.output_dir != 'current_dir':
+            is_path = os.path.exists(self.output_dir)
+            if is_path:
+                pass
+            else:
+                raise FileNotFoundError(f'the path {self.output_dir} was not found')
+
+    def change_colums(self, **updates: str) -> "RheoscaleConfig":
+        new_cols = dict(self.columns)
+        for key, value in updates.items():
+            if key not in new_cols:
+                raise KeyError(f"Invalid column key: {key}")
+            new_cols[key] = value
+        return replace(self, columns=MappingProxyType(new_cols))
+    
+    def numeric_or_none_dict(self) -> NumericFieldDict:
+        """
+        Returns only fields whose declared type includes int or float,
+        with values restricted to int | float | None.
+        """
+        out: dict[str, None | Number] = {}
+
+        for f in fields(self):
+            val = getattr(self, f.name)
+
+            origin = get_origin(f.type)
+            args = get_args(f.type)
+
+            if val is None and Number in args:
+                out[f.name] = None
+                continue
+
+            # Exclude bool explicitly
+            if isinstance(val, bool):
+                continue
+
+            
+            if f.type in (int, float):
+                out[f.name] = val
+            elif origin is Union and any(t in (int, float) for t in args):
+                out[f.name] = val
+
+        return FixedKeysDict(out)
+
+
+    def validate(self):
+        if self.requires_input_file and not self.input_file_name:
+            raise ValueError(
+                "Config requires an input file, but input_file_name is not set."
+            )
+
+        if self.Min_Override and self.Min_Override_Val is None:
+            raise ValueError("Min_Override is True but Min_Override_Val is None")
+
+        if self.Max_Override and self.Max_Override_Val is None:
+            raise ValueError("Max_Override is True but Max_Override_Val is None")
+
+        if self.Error_Override and self.Error_Override_Val is None:
+            raise ValueError("Error_Override is True but Error_Override_Val is None")
+
