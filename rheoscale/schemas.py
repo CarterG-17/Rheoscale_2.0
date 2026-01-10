@@ -14,7 +14,3 @@ POSITION_COLUMNS = [
     'assignment',
 ]
 
-# DMS_W_LOG_ADD_COLUMNS = [
-#     'log_value'
-#     'log_error'
-# ]

@@ -53,15 +53,11 @@ class RheoscaleRunner:
         
         data_from_dms = data_from_dms.dropna(how="all")
 
-      
-        
-        
-
         if self.user_config.log_scale:
             data_from_dms = self.transform_raw_data(data_from_dms)
 
         if self.user_config.error_val is not None:
-            data_from_dms = data_from_dms[self.user_config.columns['error']]  = self.user_config.error_val
+            data_from_dms[self.user_config.columns['error']]  = self.user_config.error_val
 
         
 
@@ -82,18 +78,12 @@ class RheoscaleRunner:
             #doing rheoscale analysis
             self.rheoscale_position_data = self.rheoscale_analysis()
             
-            
-
             #writing outputs
-            #self.output_data()
+            if self.running_config.output_dir != '':
+                self.output_data()
 
             return self.rheoscale_position_data
 
-        
-
-        # except Exception as exc:
-        #     # wrap unknown errors in a domain-specific one
-        #     raise RheoscaleError("RheoScale failed during execution") from exc
 
     def test_accuracy_of_input_config(self):
         
@@ -125,10 +115,8 @@ class RheoscaleRunner:
                    _true_min  = update['_true_min'],
                    _true_max = update['_true_max']
         )
-        
-        
-                                      
-
+        self.running_config._validate_and_make_output()
+ 
     def calculate_bins_and_weight(self):
         bins_size = np.abs(self.running_config.min_val-self.running_config.max_val)/self.running_config.number_of_bins
         if self.running_config.neutral_binsize == 0.0 or self.running_config.neutral_binsize == 0:
@@ -170,6 +158,6 @@ class RheoscaleRunner:
         
 
     def output_data(self):
-        write_outputs()
+        write_outputs(self.running_config, self.rheoscale_position_data)
 
         

@@ -25,7 +25,7 @@ def check_and_update_config(input_config: RheoscaleConfig, raw_DMS_data: pd.Data
         update['min_val'] = input_config.min_val
 
     infer_WT(raw_DMS_data, input_config, update)
-
+    
     if input_config.WT_val is not None:
         update['WT_val']  = input_config.WT_val
     if input_config.WT_error is not None:
@@ -65,12 +65,6 @@ def infer_bins(raw_DMS_data: pd.DataFrame, config:RheoscaleConfig, update:dict):
    possible_bin_cutoffs = [avg_count_WT_as_tested,median_pos_tested,error_data_based ]
 
    update['number_of_bins'] = math.floor(min(possible_bin_cutoffs))
-   
-   
-    
-    
-
-
 
 def infer_error_val(raw_DMS_data: pd.DataFrame, config:RheoscaleConfig,update:dict):
     
@@ -114,6 +108,9 @@ def infer_WT(raw_DMS_data: pd.DataFrame, config: RheoscaleConfig,  update: dict)
     
     else:
         WT_val =  config.WT_val
+        if config.WT_name in raw_DMS_data[config.columns['position']].to_list():
+           mask = raw_DMS_data[config.columns['position']] == WT_name
+           raw_DMS_data.drop(raw_DMS_data[mask].index, inplace=True) 
 
     #Check that value in 
     

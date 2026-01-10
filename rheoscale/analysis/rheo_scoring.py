@@ -4,11 +4,6 @@ from ..config import RheoscaleConfig
 from typing import Union
 from ..data_stuctures import HistogramData, HistogramFactory, RheoScores
 
-
-
-
-
-
 def compute_all_rheo_scores(position:str,runnig_config: RheoscaleConfig, DMS_position_data: pd.DataFrame, hist_info: HistogramFactory) -> RheoScores:
     
     '''
@@ -50,8 +45,6 @@ def compute_neutral_score(config: RheoscaleConfig, DMS_position_data: pd.DataFra
 
 def count_overlap_with_WT(df, value_column, error_column, WT_val, WT_error):
     #create an array of combined error for each measurement
-    
-
 
     #find the abs difference of the each measurement - WT_val if this value less then the combination of the errors then they overlap 
     return (np.abs(df[value_column] - WT_val) <  WT_error).sum()
@@ -60,7 +53,7 @@ def count_overlap_with_WT(df, value_column, error_column, WT_val, WT_error):
 def compute_enhancing_score(config: RheoscaleConfig, DMS_position_data: pd.DataFrame) -> np.float64:
     num_of_variants = DMS_position_data.shape[0]
     
-    num_of_WT_like = enhanced_than_WT(DMS_position_data, config.columns['value'], config.columns['error'], config.WT_val, config.neutral_binsize, dead_outcome= config.dead_extremum)
+    num_of_WT_like = enhanced_than_WT(DMS_position_data, config.columns['value'], config.columns['error'], config.WT_val, (config.neutral_binsize/2), dead_outcome= config.dead_extremum)
 
     score = num_of_WT_like/num_of_variants
     return np.float64(score)
@@ -88,9 +81,6 @@ def compute_toggle_score(runnig_config: RheoscaleConfig, DMS_position_data: pd.D
         raise ValueError('dead_extremum must be "Min" or "Max"')
     dead_outcomes = bin_counts[dead_index]
     return dead_outcomes/num_of_variants
-    
-    pass
-    #raise NotImplementedError
 
 def compute_rheostat_score(runnig_config: RheoscaleConfig, DMS_position_data: pd.DataFrame, hist: HistogramData):
     
@@ -161,8 +151,4 @@ def is_binary(runnig_config: RheoscaleConfig, DMS_position_data: pd.DataFrame, h
         raise ValueError(f"x={hist.bin_edges,runnig_config.WT_val} is outside the histogram range")
     
     return True if num_of_bins_filled == 2 else False
-    
-
-
-
-    
+       

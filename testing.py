@@ -144,8 +144,9 @@ def run_checker(path_to_data, path_to_config, path_to_results,columns,  name,sep
     #for Mpro DATA
     mpro_df = pd.read_csv(path_to_data, sep=sep)
     mpro_data_columns = columns
-    mpro_config = make_config_from_excel(path_to_config, False, mpro_data_columns)
-
+    #mpro_config = make_config_from_excel(path_to_config, False, columns, sep=sep)
+    #mpro_config = RheoscaleConfig(min_val=0.07, columns=columns, output_histogram_plots=True, output_folder_name_prefix='Mpro_2022')
+    mpro_config = RheoscaleConfig.from_json(r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\New_implemetation\Rheoscale_analysis\_Rheoscale\running_config.json")
     mpro_rheoscale = RheoscaleRunner(mpro_config, mpro_df)
     python_output =mpro_rheoscale.run()
     path_to_exceloutput = path_to_results
@@ -165,7 +166,7 @@ def main():
             "substitution": 'Mutation',
             "value": 'Functional Value',
             "error": 'Error'}
-    #run = run_checker(mpro_path_to_data,mpro_path_to_config, mpro_path_to_results, mpro_columns, name)
+    run = run_checker(mpro_path_to_data,mpro_path_to_config, mpro_path_to_results, mpro_columns, name)
     
     
     
@@ -191,7 +192,7 @@ def main():
             "substitution": 'Mutation',
             "value": 'Functional Value',
             "error": 'Error'}
-    run = run_checker(rock_path_to_data,rock_path_to_config, rock_path_to_results, mpro_columns, name)
+    #run = run_checker(rock_path_to_data,rock_path_to_config, rock_path_to_results, mpro_columns, name)
     
     
     pass

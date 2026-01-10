@@ -1,32 +1,90 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-def plot_all_positions(DMS_df):
+from .data_stuctures import HistogramData
 
-    for position in DMS_df['Position'].unique():
-        position_df = DMS_df[DMS_df['Position'] == position]
-        make_tuning_plot_one_pos(position_df)
+def plot_all_positions(positions: list, hist_list: list, dead_extremum, WT_value,save_path, prefix=''):
+    for i in range(len(positions)):
+        name = prefix+'_pos_'+str(positions[i])
+        make_tuning_plot_one_pos(hist_list[i], dead_extremum, WT_value, save_path, tle=name)
 
     
-def make_tuning_plot_one_pos(df_with_data, bins, output_name, position_number, is_log_scale, wt_value=1, dead_value=0, is_without_stop_codon=True):
-    if is_without_stop_codon:
-        df_with_data = df_with_data[df_with_data['Substitution'] != '*']
-    
-    fig, ax1 = plt.subplots(figsize=(14, 8))
-    
-    
-        # Prepare data
-    df = pd.DataFrame({'values': list(df_with_data['Value'])})
+def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,path,     
+    tle: str = "Histogram",
+    xlabel: str = "Value",
+    ylabel: str = "Count",
+    log_y: bool = True,
+    label_precision: int = 2):
         
-    # Define bins  
-    
-    df['binned'] = pd.cut(df['values'], bins=bins, include_lowest=True)
-    
-    bin_counts = df['binned'].value_counts().sort_index()
-    
-    # Plot bars 
+        counts = hist_data.counts
+        bin_edges = hist_data.bin_edges
 
-    ax1.set_xticks(range(len(bins)))
+        # ---- sanity check ----
+        if len(bin_edges) != len(counts) + 1:
+            raise ValueError("bin_edges must be one element longer than counts")
+
+        
+        bin_widths = np.diff(bin_edges)
+        bin_centers = bin_edges[:-1] + bin_widths / 2
+
+
+        
+        fmt = f"{{:.{label_precision}f}}"
+        bin_labels = [
+            f"{fmt.format(left)}–{fmt.format(right)}"
+            for left, right in zip(bin_edges[:-1], bin_edges[1:])
+        ]
+
+        # ---- create figure & axes ----
+        fig, ax = plt.subplots()
+
+        # ---- plot ----
+        ax.bar(
+            bin_centers,
+            counts,
+            width=bin_widths*0.66,
+            align="center",
+            color='black'
+        )
+        
+        
+
+        WT_index =  np.digitize(WT_value, bin_edges) - 1
+        WT_bin_center = bin_centers[WT_index]
+
+        if dead_extremum == 'Min':
+            regular_bin_size = bin_widths[-1]/2
+            ax.axvspan(bin_edges[0], bin_edges[1], alpha=0.3, color='red')
+        else: 
+             ax.axvspan(bin_edges[-1], bin_edges[-2], alpha=0.3, color='red')
+             regular_bin_size = bin_widths[0]/2
+
+        ax.axvspan(WT_bin_center-regular_bin_size, WT_bin_center+regular_bin_size, alpha=0.3, color='green')
+
+        # ---- axes formatting ----
+        ax.set_ylim(0.001, 21)
+        ax.set_yticks([i for i in range(5,21, 5)])
+        ax.set_xticks(bin_centers)
+        ax.set_xticklabels(bin_labels, rotation=45, ha="right")
+
+        ax.set_xlabel(xlabel)
+        ax.set_title(tle)
+
+        if log_y:
+            pass
+            #ax.set_yscale("log")
+
+        fig.tight_layout()
+        plt.savefig(rf'{path}\{tle}.png')
+        plt.close()
+
+        
+
+
+
+
+
+'''
 
     ax1.set_ylim(0, 20.5)
     ax1.set_yticks([i for i in range(0,21, 5)])
@@ -62,3 +120,4 @@ def make_tuning_plot_one_pos(df_with_data, bins, output_name, position_number, i
     plt.savefig(output_name, dpi=150, bbox_inches='tight')
     plt.show()
     plt.close()
+    '''

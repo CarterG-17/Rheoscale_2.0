@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field, replace, fields
+from dataclasses import dataclass, field, replace, fields, asdict
 from typing import Optional, Dict, Literal, Union, ClassVar,  get_origin, get_args, TypeAlias
 from types import MappingProxyType
 import os, pandas as pd
@@ -37,9 +37,9 @@ class RheoscaleConfig:
     number_of_bins: Optional[int] = None
     dead_extremum: Literal["Min", "Max"]= "Min"
     neutral_binsize: Optional[float] = None
-    output_dir: str ="current_dir"
+    output_dir: str ="Rheoscale_analysis"
     output_folder_name_prefix: str=''
-    
+    output_histogram_plots: bool = True
     _true_min: float= None
     _true_max: float= None
     '''
@@ -67,7 +67,7 @@ class RheoscaleConfig:
         self._validate_thresholds()
         self._validate_bins()
         self._validate_num_pos()
-        self._validate_output()
+        
         self._validate_WT()
         
     def _validate_WT(self):
@@ -115,13 +115,21 @@ class RheoscaleConfig:
             if self.number_of_positions <1:
                 raise ValueError('you must analyse at least one position')
 
-    def _validate_output(self):
-        if self.output_dir != 'current_dir':
+    def _validate_and_make_output(self):
+        
+        if self.output_dir != 'Rheoscale_analysis':
             is_path = os.path.exists(self.output_dir)
             if is_path:
                 pass
             else:
-                raise FileNotFoundError(f'the path {self.output_dir} was not found')
+                print(f'the path {self.output_dir} was not found creating dir')
+                os.makedirs(rf"{self.output_dir}")
+        else:
+            try: 
+                print(rf'attempting to create dir: {self.output_dir}\{self.output_folder_name_prefix}_Rheoscale')
+                os.makedirs(rf'{self.output_dir}\{self.output_folder_name_prefix}_Rheoscale')
+            except:
+                print(rf'file: {self.output_dir}\{self.output_folder_name_prefix}_Rheoscale aready exists please move dir or delete or rerun with new name')    
 
     def change_colums(self, **updates: str) -> "RheoscaleConfig":
         new_cols = dict(self.columns)
@@ -176,3 +184,13 @@ class RheoscaleConfig:
         if self.Error_Override and self.Error_Override_Val is None:
             raise ValueError("Error_Override is True but Error_Override_Val is None")
 
+    def to_json(self, path: str):
+        import json
+        with open(path, "w") as f:
+            json.dump(asdict(self), f, indent=4)
+
+    @classmethod
+    def from_json(cls, path: str):
+        import json
+        with open(path) as f:
+            return cls(**json.load(f))

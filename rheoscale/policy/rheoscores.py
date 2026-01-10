@@ -25,16 +25,6 @@ def calculate_rheoscores(config: RheoscaleConfig, DMS_values: pd.DataFrame, hist
 
     return position_df
     
-            
-
-                
-
-
-
-    
-    
-    
-    
     return position_df #this needs to have position columns
 
 def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->str:
@@ -73,13 +63,3 @@ def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->
         return 'moderate'
     
     return 'unclassified'
-    
-    
-    
-
-
-
-
-
-
-
