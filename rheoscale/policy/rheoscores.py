@@ -1,6 +1,6 @@
 import pandas as pd, numpy as np
 from dataclasses import asdict
-from  ..data_stuctures import RheoScores
+from  ..data_structures import RheoScores
 from ..config import RheoscaleConfig
 from ..schemas import POSITION_COLUMNS
 from..analysis.rheo_scoring import compute_all_rheo_scores #this only takes one position at a time

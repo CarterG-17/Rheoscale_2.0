@@ -7,6 +7,35 @@ class HistogramData(NamedTuple):
     bin_edges: np.ndarray
     weights: np.ndarray = None
 
+    def __add__(self, other):
+        if not isinstance(other, HistogramData):
+            return NotImplemented
+
+        # Bin compatibility check
+        if not np.array_equal(self.bin_edges, other.bin_edges):
+            raise ValueError("Cannot add histograms with different bin edges")
+
+        # Add counts
+        new_counts = self.counts + other.counts
+
+        # Handle weights
+        if self.weights is None and other.weights is None:
+            new_weights = None
+        elif self.weights is None:
+            new_weights = other.weights.copy()
+        elif other.weights is None:
+            new_weights = self.weights.copy()
+        else:
+            new_weights = self.weights + other.weights
+
+        return HistogramData(
+            counts=new_counts,
+            bin_edges=self.bin_edges,
+            weights=new_weights
+        )     
+        
+
+
 class HistogramFactory:
     def __init__(self, bin_edges, weights=None):
         self.bin_edges = bin_edges

@@ -2,7 +2,7 @@ import pandas as pd, numpy as np
 from dataclasses import dataclass, fields
 from ..config import RheoscaleConfig
 from typing import Union
-from ..data_stuctures import HistogramData, HistogramFactory, RheoScores
+from ..data_structures import HistogramData, HistogramFactory, RheoScores
 
 def compute_all_rheo_scores(position:str,runnig_config: RheoscaleConfig, DMS_position_data: pd.DataFrame, hist_info: HistogramFactory) -> RheoScores:
     

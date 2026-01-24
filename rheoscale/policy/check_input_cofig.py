@@ -137,6 +137,6 @@ def infer_min_max(raw_DMS_data: pd.DataFrame, column_names: dict, update: dict):
     update['min_val'] = raw_DMS_data[column_names['value']].min()
     update['_true_min'] =raw_DMS_data[column_names['value']].min()
     update['max_val'] = raw_DMS_data[column_names['value']].max()
-    update['_true_max'] =raw_DMS_data[column_names['value']].min()
+    update['_true_max'] =raw_DMS_data[column_names['value']].max()
     
     

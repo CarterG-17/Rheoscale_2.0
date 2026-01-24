@@ -2,7 +2,7 @@ from dataclasses import dataclass, replace
 from typing import Any, Optional, NamedTuple
 import pandas as pd, numpy as np
 
-from .data_stuctures import HistogramData, HistogramFactory
+from .data_structures import HistogramData, HistogramFactory
 from .config import RheoscaleConfig
 from .errors import RheoscaleError
 from .schemas import POSITION_COLUMNS

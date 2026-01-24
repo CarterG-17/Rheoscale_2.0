@@ -91,14 +91,14 @@ def compare_rheoscale(df_python: pd.DataFrame, path_to_RESULTS, name: str,sep='\
 
     pass
 
-def make_config_from_excel(path_to_config, log_scale, columns:dict = None, sep='\t')-> RheoscaleConfig:
+def make_config_from_excel(name, path_to_config, log_scale, columns:dict = None, sep='\t')-> RheoscaleConfig:
 
 
     df = pd.read_csv(path_to_config, sep=sep)
     if columns is None:
-       my_config= RheoscaleConfig()
+       my_config= RheoscaleConfig(name, output_histogram_plots=True)
     else:
-        my_config= RheoscaleConfig(columns=columns)
+        my_config= RheoscaleConfig(name, columns=columns, output_histogram_plots=True)
     my_dict = df.set_index(df.columns[0])[df.columns[1]].to_dict()
 
     if log_scale:
@@ -144,11 +144,12 @@ def run_checker(path_to_data, path_to_config, path_to_results,columns,  name,sep
     #for Mpro DATA
     mpro_df = pd.read_csv(path_to_data, sep=sep)
     mpro_data_columns = columns
-    #mpro_config = make_config_from_excel(path_to_config, False, columns, sep=sep)
-    #mpro_config = RheoscaleConfig(min_val=0.07, columns=columns, output_histogram_plots=True, output_folder_name_prefix='Mpro_2022')
-    mpro_config = RheoscaleConfig.from_json(r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\New_implemetation\Rheoscale_analysis\_Rheoscale\running_config.json")
+    mpro_config = make_config_from_excel(name, path_to_config, False, columns, sep=sep)
+    #mpro_config = RheoscaleConfig(min_val=0.07, columns=columns, output_histogram_plots=False, output_folder_name_prefix='Mpro_2022_run_2')
+    #mpro_config = RheoscaleConfig.from_json(r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\New_implemetation\Rheoscale_analysis\_Rheoscale\running_config.json")
     mpro_rheoscale = RheoscaleRunner(mpro_config, mpro_df)
     python_output =mpro_rheoscale.run()
+    
     path_to_exceloutput = path_to_results
     
     compare_rheoscale(python_output, path_to_exceloutput, name)
@@ -161,12 +162,13 @@ def main():
     mpro_path_to_data = r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\Check_rheoscale\Carter_Mpro_2024\DATA.tsv"
     mpro_path_to_results = r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\Check_rheoscale\Carter_Mpro_2024\RESULTS.tsv"
     mpro_path_to_config = r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\Check_rheoscale\Carter_Mpro_2024\CONFIG.tsv"
-    name = 'Mpro_2024'
+    name = 'Mpro_2024_carter_style'
     mpro_columns = {"position": "Position",
             "substitution": 'Mutation',
             "value": 'Functional Value',
             "error": 'Error'}
     run = run_checker(mpro_path_to_data,mpro_path_to_config, mpro_path_to_results, mpro_columns, name)
+    #position_info = run.position_data
     
     
     
@@ -181,7 +183,7 @@ def main():
             "substitution": 'Mutation',
             "value": 'Functional Value',
             "error": 'Error'}
-    #run = run_checker(len_path_to_data,len_path_to_config, len_path_to_results, mpro_columns, name)
+    run = run_checker(len_path_to_data,len_path_to_config, len_path_to_results, mpro_columns, name)
     #for rocklin lab
     rock_path_to_data = r"C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\Check_rheoscale\hannah_rocklin\R_DATA.tsv"
     
@@ -192,7 +194,7 @@ def main():
             "substitution": 'Mutation',
             "value": 'Functional Value',
             "error": 'Error'}
-    #run = run_checker(rock_path_to_data,rock_path_to_config, rock_path_to_results, mpro_columns, name)
+    run = run_checker(rock_path_to_data,rock_path_to_config, rock_path_to_results, mpro_columns, name)
     
     
     pass

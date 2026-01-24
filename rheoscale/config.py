@@ -2,10 +2,12 @@ from dataclasses import dataclass, field, replace, fields, asdict
 from typing import Optional, Dict, Literal, Union, ClassVar,  get_origin, get_args, TypeAlias
 from types import MappingProxyType
 import os, pandas as pd
-
+from pathlib import Path
 #interal keys
 Number = Union[int, float]
 NumericFieldDict: TypeAlias = dict[str,None | Number]
+
+
 
 ColumnKey = Literal[
     "position",
@@ -23,13 +25,13 @@ class FixedKeysDict(dict):
 
 @dataclass (frozen=True)
 class RheoscaleConfig:
+    protein_name: str
     input_file_name: Optional[str] = None
     number_of_positions: Optional[int]= None
     log_scale: Optional[bool] = False
     WT_val: Optional[float] = None 
     WT_error: Optional[float] = None 
     WT_name: str = 'WT'
-    
     
     min_val: Optional[float] = None
     max_val: Optional[float] = None 
@@ -38,8 +40,9 @@ class RheoscaleConfig:
     dead_extremum: Literal["Min", "Max"]= "Min"
     neutral_binsize: Optional[float] = None
     output_dir: str ="Rheoscale_analysis"
-    output_folder_name_prefix: str=''
-    output_histogram_plots: bool = True
+    
+    output_histogram_plots: bool = False
+    even_bins: bool = False
     _true_min: float= None
     _true_max: float= None
     '''
@@ -126,10 +129,10 @@ class RheoscaleConfig:
                 os.makedirs(rf"{self.output_dir}")
         else:
             try: 
-                print(rf'attempting to create dir: {self.output_dir}\{self.output_folder_name_prefix}_Rheoscale')
-                os.makedirs(rf'{self.output_dir}\{self.output_folder_name_prefix}_Rheoscale')
+                print(rf'attempting to create dir: {self.output_dir}\{self.protein_name}_Rheoscale')
+                os.makedirs(rf'{self.output_dir}\{self.protein_name}_Rheoscale')
             except:
-                print(rf'file: {self.output_dir}\{self.output_folder_name_prefix}_Rheoscale aready exists please move dir or delete or rerun with new name')    
+                print(rf'file: {self.output_dir}\{self.protein_name}_Rheoscale aready exists please move dir or delete or rerun with new name')    
 
     def change_colums(self, **updates: str) -> "RheoscaleConfig":
         new_cols = dict(self.columns)
