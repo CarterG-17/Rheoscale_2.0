@@ -66,13 +66,17 @@ class RheoscaleConfig:
 
 
     def __post_init__(self):
+        self._validate_name()
         self._validate_input_file()
         self._validate_thresholds()
         self._validate_bins()
         self._validate_num_pos()
         
         self._validate_WT()
-        
+    def _validate_name(self):
+        if not isinstance(self.protein_name, str):
+            raise ValueError('The input name MUST be a string!')
+
     def _validate_WT(self):
         if self.WT_val is None and self.WT_error is None:
             pass
