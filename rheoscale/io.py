@@ -2,6 +2,7 @@
 import pandas as pd, os
 from types import MappingProxyType
 from typing import Optional
+from pathlib import Path
 from .config import RheoscaleConfig
 from .plotting_histograms import plot_all_positions
 
@@ -27,20 +28,21 @@ def validate_columns(df: pd.DataFrame, config: RheoscaleConfig):
         )
     
 def write_outputs(running_config: RheoscaleConfig, position_df: pd.DataFrame):
-    out_dir = running_config.output_dir
-    json_path = rf'{out_dir}\running_config.json'
+    out_dir = (Path(running_config.output_dir) / f'{running_config.protein_name}_Rheoscale')
+    
+    json_path = out_dir / f'{running_config.protein_name}_running_config.json'
     #make_config_output 
     print('hello')
     running_config.to_json(json_path)
 
     #make data sheet output 
-    data_path = rf'{out_dir}\raw_data.csv'
+    data_path = out_dir / f'{running_config.protein_name}_raw_data.csv'
     position_df.to_csv(data_path)
 
     #just classifcations
     just_pos_and_assign = position_df[['position', 'assignment']]
-    class_path = rf'{out_dir}\classifications.csv'
-    position_df.to_csv(class_path)
+    class_path = out_dir / f'{running_config.protein_name}_classifications.csv'
+    just_pos_and_assign.to_csv(class_path)
 
     if running_config.output_histogram_plots:
         is_hist_plots = True
@@ -53,7 +55,7 @@ def write_outputs(running_config: RheoscaleConfig, position_df: pd.DataFrame):
 
     position_list = position_df['position'].to_list()
     hist_list = position_df['histogram'].to_list()
-    plot_output = rf'{out_dir}\{running_config.protein_name}_plots'
+    plot_output = out_dir / f'{running_config.protein_name}_plots'
     os.makedirs(plot_output, exist_ok=True)
     plot_all_positions(position_list, hist_list, running_config.dead_extremum, running_config.WT_val,dead_value ,plot_output, running_config.neutral_binsize,running_config.protein_name, is_hist_plots, is_even_bins=running_config.even_bins)
 

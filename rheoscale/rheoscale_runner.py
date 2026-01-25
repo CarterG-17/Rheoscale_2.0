@@ -123,9 +123,22 @@ class RheoscaleRunner:
             self.running_config = replace(self.running_config, neutral_binsize=bins_size*2)
 
         #add one for the final edge
-        dead = np.linspace(start=self.running_config._true_min, stop=bins_size+self.running_config.min_val, num=1)
-        remaining= np.linspace(start=bins_size+self.running_config.min_val, stop=self.running_config.max_val, num=self.running_config.number_of_bins)
-        bin_edges = np.concatenate([dead, remaining])
+        if self.running_config.dead_extremum == 'Min':
+            dead = np.linspace(start=self.running_config._true_min, stop=bins_size+self.running_config.min_val, num=1)
+            remaining= np.linspace(start=bins_size+self.running_config.min_val, stop=self.running_config.max_val, num=self.running_config.number_of_bins)
+            if dead != self.running_config.min_val:
+                bin_edges = np.concatenate([dead, remaining])
+            else: 
+                bin_edges = remaining
+        else: 
+             dead = np.linspace(start=self.running_config._true_max, stop=bins_size+self.running_config.max_val, num=1)
+             remaining= np.linspace(start=bins_size+self.running_config.min_val, stop=self.running_config.max_val, num=self.running_config.number_of_bins)
+             bottom = np.linspace(start=remaining[0]-bins_size, stop=remaining[0], num=1)
+             
+             if dead != self.running_config.max_val:
+                 bin_edges = np.concatenate([bottom, remaining, dead])
+             else: 
+                 bin_edges = np.concatenate([bottom, remaining])
         wt_bin = np.digitize(self.running_config.WT_val, bin_edges)-1
 
         if self.running_config.dead_extremum == "Min":
@@ -133,7 +146,7 @@ class RheoscaleRunner:
             dead_bin = 0
         else:
             
-            dead_bin= -1
+            dead_bin= np.array(range(self.running_config.number_of_bins)).max()
         
         weights = np.full(self.running_config.number_of_bins, 3)
         

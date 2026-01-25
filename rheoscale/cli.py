@@ -1,6 +1,7 @@
 import argparse
 from pathlib import Path
-from rheoscale.rheoscale_config import RheoscaleConfig  
+from rheoscale.config import RheoscaleConfig  
+from rheoscale.rheoscale_runner import RheoscaleRunner
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -115,8 +116,9 @@ def main():
     # ---- Hand off to analysis ----
     print("Running RheoScale with config:")
     print(config)
-
-    # run_rheoscale(config)  # <- your pipeline entry point
+    if config.input_file_name is None:
+        raise ValueError('For CLI you must have a file that you can upload to the config must have --input_file_name')
+    RheoscaleRunner(config)
 
 
 if __name__ == "__main__":

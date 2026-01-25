@@ -2,7 +2,7 @@ from dataclasses import fields
 import statistics, math
 from typing import Optional
 from ..config import RheoscaleConfig
-import pandas as pd
+import pandas as pd, numpy as np
 
 
 def check_and_update_config(input_config: RheoscaleConfig, raw_DMS_data: pd.DataFrame):
@@ -18,11 +18,18 @@ def check_and_update_config(input_config: RheoscaleConfig, raw_DMS_data: pd.Data
     '''
     update = make_infer(input_config)
 
-    infer_min_max(raw_DMS_data, input_config.columns, update)
+    infer_min_max(raw_DMS_data, input_config.columns, update, input_config.log_scale)
     if input_config.max_val is not None:
-        update['max_val']  = input_config.max_val
+        if input_config.log_scale:
+            update['max_val'] = np.log10(input_config.max_val)
+        else:
+            update['max_val']  = input_config.max_val
     if input_config.min_val is not None:
-        update['min_val'] = input_config.min_val
+        if input_config.log_scale:
+            update['min_val'] = np.log10(input_config.min_val)
+        else:
+
+            update['min_val'] = input_config.min_val
 
     infer_WT(raw_DMS_data, input_config, update)
     
@@ -32,13 +39,14 @@ def check_and_update_config(input_config: RheoscaleConfig, raw_DMS_data: pd.Data
         update['WT_error'] = input_config.WT_error
 
 
-    infer_neutral_bin_size(update)
+    infer_neutral_bin_size(update, input_config.log_scale, input_config.error_val)
     if input_config.neutral_binsize is not None:
         update['neutral_binsize']  = input_config.neutral_binsize
 
     infer_num_of_pos(raw_DMS_data, input_config, update)
     if input_config.number_of_positions is not None:
         update['number_of_positions']  = input_config.number_of_positions
+    
     infer_error_val(raw_DMS_data, input_config, update)
     if input_config.error_val is not None:
         update['error_val']  = input_config.error_val
@@ -122,21 +130,28 @@ def infer_WT(raw_DMS_data: pd.DataFrame, config: RheoscaleConfig,  update: dict)
         if config.WT_val is not None:
             raise ValueError(f'the WT values provided as an input = {WT_val}\n this value is not found with in the bounds of the assay min = {update['min_val']} -- max {update['max_val']}')
         else:
+            
             raise ValueError(f'the WT values calculated from the average of {num_of_wt} WT values found in the input file = {WT_val}\n this value is not found with in the bounds of the assay min = {update['min_val']} -- max {update['max_val']}')
 
-def infer_neutral_bin_size(update: dict):
-    WT_error = update['WT_error']
-    update['neutral_binsize'] = WT_error*4
+def infer_neutral_bin_size(update: dict, is_log, error_val):
+    if is_log and error_val is not None:
+        WT_error = update['WT_error']
+        transformed_error = np.abs((0.434*WT_error)/(10**update['WT_val']))
+        update['neutral_binsize'] = transformed_error*4
+    
+    else:
+        WT_error = update['WT_error']
+        update['neutral_binsize'] = WT_error*4
+    
+
 
 def make_infer(input_config: RheoscaleConfig) -> dict:
     config_fields = input_config.numeric_or_none_dict()
     return config_fields
 
-def infer_min_max(raw_DMS_data: pd.DataFrame, column_names: dict, update: dict):
-    
-    update['min_val'] = raw_DMS_data[column_names['value']].min()
-    update['_true_min'] =raw_DMS_data[column_names['value']].min()
-    update['max_val'] = raw_DMS_data[column_names['value']].max()
-    update['_true_max'] =raw_DMS_data[column_names['value']].max()
-    
-    
+def infer_min_max(raw_DMS_data: pd.DataFrame, column_names: dict, update: dict, log_scale:bool):
+  
+        update['min_val'] = raw_DMS_data[column_names['value']].min()
+        update['_true_min'] =raw_DMS_data[column_names['value']].min()
+        update['max_val'] = raw_DMS_data[column_names['value']].max()
+        update['_true_max'] =raw_DMS_data[column_names['value']].max()

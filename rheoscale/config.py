@@ -123,18 +123,19 @@ class RheoscaleConfig:
                 raise ValueError('you must analyse at least one position')
 
     def _validate_and_make_output(self):
-        
+        out_dir = Path(self.output_dir)
         if self.output_dir != 'Rheoscale_analysis':
             is_path = os.path.exists(self.output_dir)
             if is_path:
                 pass
             else:
                 print(f'the path {self.output_dir} was not found creating dir')
-                os.makedirs(rf"{self.output_dir}")
+                os.makedirs(out_dir)
         else:
             try: 
                 print(rf'attempting to create dir: {self.output_dir}\{self.protein_name}_Rheoscale')
-                os.makedirs(rf'{self.output_dir}\{self.protein_name}_Rheoscale')
+                os.makedirs((out_dir / f'{self.protein_name}_Rheoscale'))
+                
             except:
                 print(rf'file: {self.output_dir}\{self.protein_name}_Rheoscale aready exists please move dir or delete or rerun with new name')    
 

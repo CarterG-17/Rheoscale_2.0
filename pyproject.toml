@@ -7,10 +7,10 @@ name = "rheoscale"
 version = "0.1.0"
 description = "RheoScale implementation for DMS analysis"
 requires-python = ">=3.9"
-dependencies = [
-    "numpy",
-    "pandas",
-]
+dependencies = ["numpy", "pandas"]
+
+[project.scripts]
+rheoscale = "rheoscale.cli:main"
 
 [tool.setuptools]
 packages = ["rheoscale"]
