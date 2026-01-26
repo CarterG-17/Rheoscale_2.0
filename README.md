@@ -77,10 +77,14 @@ Mainly the setting up the configuration object can be the most difficult task fo
 
 **Comming Soon: Jupyter UI with widgets... watch out**
 
-**RheoscaleConfig (protein_name,** ***input_file_name***=*None*, ***number_of_positions***=*None*, ***log_scale***=*False*, ***WT_val***=*None*, ***WT_error***=*None*, ***WT_name***=*None*, ***min_val***=*None*, ***max_val***=*None*, ***error_val***=*None*, ***number_of_bins***=*None*, ***dead_extremum***=*'Min'*, ***neutral_binsize***=*None*, ***output_dir***=*None*, ***output_histogram_plots***=*False*, ***even_bins***=*True*, ***columns***=*mappingproxy({'position': 'Position', 'substitution': 'Substitution', 'value': 'Value', 'error': 'Error'}))*
+### RheoscaleConfig()
 
-### **Parameters:**
+**RheoscaleConfig** (**protein_name**, ***input_file_name***=*None*, ***number_of_positions***=*None*, ***log_scale***=*False*, ***WT_val***=*None*, ***WT_error***=*None*, ***WT_name***=*None*, ***min_val***=*None*, ***max_val***=*None*, ***error_val***=*None*, ***number_of_bins***=*None*, ***dead_extremum***=*'Min'*, ***neutral_binsize***=*None*, ***output_dir***=*None*, ***output_histogram_plots***=*False*, ***even_bins***=*True*, ***columns***=*mappingproxy({'position': 'Position', 'substitution': 'Substitution', 'value': 'Value', 'error': 'Error'}))*
 
+#### Required Parameters:
+
+
+#### Optional Parameters
 **input_file_name : str (path to CSV file)** <br>
 If passing in a mutational data from a CSV file provide the path to the file here
 this file must contain 4 columns:  Position, Substitution, Value, Error (these do not have to be the names of the columns see **columns** parameter)
@@ -135,6 +139,27 @@ If your colums names do not match out names. Then creating a dict that maps the 
  "value": 'Functional Value',
  "error": 'Error'}
 
-## Examples
+#### Methods
+
+**from_json(path_to_json)**
+can take in a JSON file with these type of inputs
+
+### RheoscaleRunner()
+**RheoscaleRunner** (**config**, ***DMS_data***=*None*)
+
+#### Reqired Parameters:
+**config : RheoscaleConfig**
+a configuration from the first step
+
+#### Optional Parameters:
+**DMS_data : pd.DataFrame (Default= None)**
+if a input file is not given in the df then a data frame can be added here
+
 
 ## License
+
+This package is under a GNU AFFERO GENERAL PUBLIC LICENSE
+
+## Contact 
+For scientific questions about the dataset, please contact the senior faculty related to this project, Dr. Liskin Swint-Kruse 
+(lswint-kruse@kumc.edu)
