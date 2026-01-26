@@ -3,13 +3,31 @@
 RheoScale 2.0 (called rheoscale) is a Python-based analysis tool that classifies protein positions based on quantitative variant data. It reads a CSV file OR takes in a data containing measured values (e.g., enzyme activity, fluorescence, binding, etc.) for each amino acid substitution and assigns each position to classes such as: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, WT/inactive. The script also generates histograms and a summary output file that can be used for further analysis.
 
 ## Installation Instructions
+### If you are new to python
+How to use this python version of the RheoScale calculator
+Python Requirements:  You need Python 3 or later and a few standard Python packages.  If you don’t have Python installed:
+-	Go to https://www.python.org/downloads/
+-	Download the latest Python 3 version (or higher).
+-	During installation, check the box that says “Add Python to PATH”.
+To confirm it’s installed, open a terminal (Command Prompt on Windows, Terminal on macOS/Linux), and run:
+```bash 
+python --version
+```
+You should see something like Python 3.10.6.
 
+Installing required packages:  Open a terminal (Command Prompt on Windows, Terminal on macOS/Linux), and run:
+```bash 
+pip install pandas numpy matplotlib
+```
+That’s all the setup you need !!
+
+
+
+### To install rheoscale
 to install python version run
 ```bash
 python pip install rheoscale
 ```
-
-
 
 
 ## Usage/Quick Start
