@@ -25,24 +25,32 @@ class FixedKeysDict(dict):
 
 @dataclass (frozen=True)
 class RheoscaleConfig:
-    protein_name: str
-    input_file_name: Optional[str] = None
-    number_of_positions: Optional[int]= None
-    log_scale: Optional[bool] = False
-    WT_val: Optional[float] = None 
-    WT_error: Optional[float] = None 
-    WT_name: str = 'WT'
+    protein_name: str = field(
+        metadata={"label": "Protein name"}
+    )
+    input_file_name: str = field(default=None, metadata={'label': 'Input File Path'})
+    number_of_positions: int= field(default=None, metadata={'label': 'Number of positions'})
+    log_scale: bool = field(default=False, metadata={'label': 'Convert values to log scale'})
+    WT_val: float = field(default=None, metadata={'label': 'Measured value of WT'})
+    WT_error: float= field(default=None, metadata={'label': 'Measured value of WT error'}) 
+    WT_name: str = field(default=None, metadata={'label': 'Name of WT in position coloumn in data'})
     
-    min_val: Optional[float] = None
-    max_val: Optional[float] = None 
-    error_val: Optional[float] = None
-    number_of_bins: Optional[int] = None
-    dead_extremum: Literal["Min", "Max"]= "Min"
-    neutral_binsize: Optional[float] = None
-    output_dir: str ="Rheoscale_analysis"
+    min_val: float = field(default=None, metadata={'label': 'Minimum measurable value'})
+    max_val: float = field(default=None, metadata={'label': 'Maximum measurable value'}) 
+    error_val: float = field(default=None, metadata={'label': 'Error override'}) 
+    number_of_bins: int = field(
+        default=None,
+        metadata={
+            "label": "Number of bins",
+            "min": 2,
+            "max": 20
+        })
+    dead_extremum: Literal["Min", "Max"]= field(default="Min", metadata={'label': 'Dead Extremum'})
+    neutral_binsize: float = field(default=None, metadata={'label': 'Size of the neutral bin'}) 
+    output_dir: str =field(default=None, metadata={'label': 'Name of output dir that is added after the protein name'}) 
     
-    output_histogram_plots: bool = False
-    even_bins: bool = False
+    output_histogram_plots: bool = field(default=False, metadata={'label': 'Output all the histgram plots of each position'}) 
+    even_bins: bool = field(default=True, metadata={'label': 'Even bins (Even bins if True, if false dead bin will be as large as measured values)'}) 
     _true_min: float= None
     _true_max: float= None
     '''
@@ -60,8 +68,8 @@ class RheoscaleConfig:
             "substitution": 'Substitution',
             "value": 'Value',
             "error": 'Error'
-        })
-    )
+        }), metadata= {'label': 'Name of Columns'})
+    
 
 
 
