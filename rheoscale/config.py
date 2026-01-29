@@ -49,8 +49,8 @@ class RheoscaleConfig:
     neutral_binsize: float = field(default=None, metadata={'label': 'Size of the neutral bin'}) 
     output_dir: str =field(default='Rheoscale_analysis', metadata={'label': 'Name of output dir that is added after the protein name'}) 
     
-    output_histogram_plots: bool = field(default=False, metadata={'label': 'Output all the histgram plots of each position'}) 
-    even_bins: bool = field(default=True, metadata={'label': 'Even bins (Even bins if True, if false dead bin will be as large as measured values)'}) 
+    output_histogram_plots: bool = field(default=False, metadata={'label': 'Output all the histogram plots of each position'}) 
+    even_bins: bool = field(default=True, metadata={'label': 'Even bins (Even bins if True, if false dead bin will be as wide as measured values)'}) 
     _true_min: float= None
     _true_max: float= None
     '''
