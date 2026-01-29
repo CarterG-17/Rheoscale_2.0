@@ -28,14 +28,16 @@ to install python version run
 ```bash
 python pip install rheoscale
 ```
-
+This installs Rheoscale, making it available for use in any Python script via import rheoscale
 
 ## Usage/Quick Start
 
+There are 3 main way's to use rheoscale. 
+1. As a Python Package
+2. As a Command line interface (CLI)
+3. As an excel spreadsheet
 
-this will install rheoscale able to be used on any python scripts by importing rheoscale
-
-### using as a python package
+### Python Package
 
 ```python 
 
@@ -79,7 +81,12 @@ Simply put there are 2 steps to running the python rheoscale
 
 
 ### CLI version
-To use the command line interface of rheoscale you can run 
+To see the inputs of the CLI version run:
+```bash
+python -m rheoscale -h
+```
+
+To use the command line interface of rheoscale you can run: 
 ```bash
 python -m rheoscale protein_name --input_file (--opitional_inputs)
 ```

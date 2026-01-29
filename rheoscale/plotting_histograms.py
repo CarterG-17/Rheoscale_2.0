@@ -42,9 +42,11 @@ def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,
              else:
                   bin_edges[-1] = dead_value
         
-        bin_widths = np.diff(bin_edges)
-        bin_centers = bin_edges[:-1] + bin_widths / 2
+        # bin_widths = np.diff(bin_edges)
+        # bin_centers = bin_edges[:-1] + bin_widths / 2
 
+        bin_centers = 0.5 * (bin_edges[:-1] + bin_edges[1:])
+        bin_widths = np.diff(bin_edges)
 
         
         fmt = f"{{:.{label_precision}f}}"
@@ -60,7 +62,7 @@ def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,
         ax.bar(
             bin_centers,
             counts,
-            width=bin_widths*0.66,
+            width=bin_widths*0.85,
             align="center",
             color='black'
         )
@@ -71,7 +73,7 @@ def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,
         WT_bin_center = bin_centers[WT_index]
 
         ax.axvline(dead_value, color='red')
-        ax.axvspan(WT_bin_center-(neutral_bin_size/2), WT_bin_center+(neutral_bin_size/2), alpha=.5, color='green')
+        ax.axvspan(WT_value-(neutral_bin_size/2), WT_value+(neutral_bin_size/2), alpha=.55, color='green')
 
         # ---- axes formatting ----
         if not is_all:
@@ -93,6 +95,7 @@ def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,
 
         fig.tight_layout()
         plt.savefig(rf'{path}\{tle}.png')
+        print(fr'#####saved to {path}\{tle}.png')
         plt.close()
 
         
