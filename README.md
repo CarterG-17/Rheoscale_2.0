@@ -5,8 +5,8 @@ RheoScale 2.0 (called rheoscale) is a python-based tool that identifies overall 
 ## Usage/Quick Start
 
 Rheoscale2.0 has been implemented 3 different formats. 
-1. As a Python Package
-2. As a Command line interface (CLI)
+1. As a Python Package (this github site)
+2. As a Command line interface (CLI; this github site)
 3. As an Excel workbook, which can be downloaded at https://github.com/liskinsk/RheoScale-calculator
 
 ## About the Calculations
