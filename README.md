@@ -35,7 +35,7 @@ This installs Rheoscale, making it available for use in any Python script via im
 There are 3 main way's to use rheoscale. 
 1. As a Python Package
 2. As a Command line interface (CLI)
-3. As an excel spreadsheet
+3. As an excel spreadsheet at https://github.com/liskinsk/RheoScale-calculator
 
 ### Python Package
 
@@ -92,7 +92,7 @@ python -m rheoscale protein_name --input_file (--opitional_inputs)
 ```
 ### Excel version
 
-To use the excel version just download the excel sheet from this git hub folder and use as need
+To use the excel version, download the excel sheet from https://github.com/liskinsk/RheoScale-calculator
 To see more information please read the "How to use this calculator" tab found in the excel sheet 
 
 ## Documentation
