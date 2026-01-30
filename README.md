@@ -155,7 +155,7 @@ To see more information please read the "How to use this calculator" worksheet i
 Setting up the configuration object can be the most detailed task for running rheoscale
  
 
-**Comming Soon: Jupyter UI with widgets... watch out**
+**Comming Soon: Jupyter UI with widgets...**
 
 ### RheoscaleConfig()
 
