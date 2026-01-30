@@ -1,6 +1,6 @@
 # Rheoscale_2.0
 ### Description
-RheoScale 2.0 (called rheoscale) is a Python-based analysis tool that classifies protein positions based on quantitative variant data. It reads a CSV file OR takes in a data containing measured values (e.g., enzyme activity, fluorescence, binding, etc.) for each amino acid substitution and assigns each position to classes: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, WT/inactive. The script also generates histograms and a summary output file that can be used for further analysis.
+RheoScale 2.0 (called rheoscale) is a python-based tool that identifies overall substitution behaviors for individual protein positions from their respective sets of amino acid substitutions (e.g., all 19 substitutions at one position). The values measured for each amoni acid substitution (e.g., enzyme activity, fluorescence, binding, etc.)  is input using a CSV file OR user-input.  The range and types of outcomes are then used to assign individual positions to one of several classes: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, or WT/inactive. The rheoscale script also generates histograms and a summary output file that can be used for further analyses.
 
 ## Installation Instructions
 ### If you are new to python
@@ -28,14 +28,14 @@ to install python version run
 ```bash
 python pip install rheoscale
 ```
-This installs Rheoscale, making it available for use in any Python script via import rheoscale
+This installs rheoscale, making it available for use in any Python script via import rheoscale
 
 ## Usage/Quick Start
 
-There are 3 main way's to use rheoscale. 
+Rheoscale2.0 has been implemented 3 different ways. 
 1. As a Python Package
 2. As a Command line interface (CLI)
-3. As an excel spreadsheet at https://github.com/liskinsk/RheoScale-calculator
+3. As an Excel workbook, which can be downloaded at https://github.com/liskinsk/RheoScale-calculator
 
 ### Python Package
 
@@ -92,12 +92,12 @@ python -m rheoscale protein_name --input_file (--opitional_inputs)
 ```
 ### Excel version
 
-To use the excel version, download the excel sheet from https://github.com/liskinsk/RheoScale-calculator
-To see more information please read the "How to use this calculator" tab found in the excel sheet 
+To use the Excel version, download the Excel workbook from https://github.com/liskinsk/RheoScale-calculator.
+To see more information please read the "How to use this calculator" worksheet in this workbook.
 
 ## Documentation
 
-Setting up the configuration object can be the most difficult task for running rheoscale
+Setting up the configuration object can be the most detailed task for running rheoscale
  
 
 **Comming Soon: Jupyter UI with widgets... watch out**
@@ -231,5 +231,6 @@ f) The recommended number of bins is determined through a combination of the ave
 This package is under a GNU AFFERO GENERAL PUBLIC LICENSE
 
 ## Contact 
-For scientific questions about the dataset, please contact the senior faculty related to this project, Dr. Liskin Swint-Kruse 
+For scientific questions about Rheoscale2.0, please contact Dr. Liskin Swint-Kruse.
 (lswint-kruse@kumc.edu)
+For coding questions about Rheoscale2.0, pelase contact cgray@ku.edu
