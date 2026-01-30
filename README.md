@@ -12,23 +12,26 @@ Rheoscale2.0 has been implemented 3 different formats.
 ## About the Calculations
 
 #### Position classes:  
-At least 5 amino acid variants are required for each position to be analyzed.  RheoScale first uses the value and error for the wild-type variant to determine whether a position is “neutral” or “non-neutral”.  The variant sets for non-neutral positions are then assessed with a modified histogram analysis. The logic used to define position classes follows the order: Neutral>Toggle>Rheostat>Moderate/Adverse/WT-Inactive_split/Enhancing.  The descriptions of these position classes, as well as the publications describing their default score thresholds, are:
+At least 5 amino acid variants are required for each position to be analyzed.  RheoScale first uses the value and error for the wild-type variant to determine whether a position is “neutral” or “non-neutral”.  The variant sets for non-neutral positions are then assessed with a modified histogram analysis. 
+The logic used to define position classes follows the order: Neutral>Toggle>Rheostat>Moderate/Adverse/WT-Inactive_split/Enhancing.  The descriptions of these position classes, as well as the publications describing their default score thresholds, are:
 >>Neutral: At least 70% of substitutions have WT-like outcomes for the parameter measured.  The neutral score for each position, which is used to assign neutral positions, is calculated separately from all other scores, by using a neutral bin that is centered on the wild-type value and is (usually) independent of the histogram bin size.
 Reference: Martin, Tyler A., Tiffany Wu, Qingling Tang, Larissa L. Dougherty, Daniel J Parente, Liskin Swint-Kruse, and Aron W. Fenton. 2020. 'Identification of biochemically neutral positions in liver pyruvate kinase', Proteins: Structure, Function, and Bioinformatics, 88: 1340-50 
 
->>Moderate rheostat: Substitutions have non-neutral outcomes, but the set of substitutions samples less than half of the possible range AND the values are closer to WT than to the "dead" end of the range. 
+>>Moderate rheostat: Substitutions have non-neutral outcomes, but the set of substitutions samples less than half of the possible range AND the values are closer to WT than to the "dead" end of the range. If positions are close to the thresholds for moderate, adverse, or WT/Inactive split, the assignment flagged, indicating that a manual inspection of the data is needed to determine the best position class.
 Reference: Swint-Kruse, L., T. A. Martin, B. M. Page, T. Wu, P. M. Gerhart, L. L. Dougherty, Q. Tang, D. J. Parente, B. R. Mosier, L. E. Bantis, and A. W. Fenton. 2021. 'Rheostat functional outcomes occur when substitutions are introduced at nonconserved positions that diverge with speciation', Protein Sci, 30: 1833-53.
 
 >>Rheostat: Simplistically, the position's set of substitutions samples at least half of the possible functional range.  When the "weighted" rheostat score is used, the sampling might be a little less than half of the range, but contributions from variants with partial loss-of-function are weighted more heavily, since they provide more confidence that a position is a rheostat position.   The weighted score has been used in almost all studies to date.  Rheostat behavior cannot be detected from the average of a position's substitution values.  
 Reference: Hodges, A. M., A. W. Fenton, L. L. Dougherty, A. C. Overholt, and L. Swint-Kruse. 2018. 'RheoScale: A tool to aggregate and quantify experimentally determined substitution outcomes for multiple variants at individual protein positions', Hum Mutat, 39: 1814-26.
 
->>Adverse:  Like Moderate rheostat positions, substitutions have non-nuetral outcomes and the set of substitutions samples less than half of the possible range.  However, the set of values are closer to the "dead" end of the range than to WT. 
+>>Adverse:  Like Moderate rheostat positions, substitutions have non-nuetral outcomes and the set of substitutions samples less than half of the possible range.  However, the set of values are closer to the "dead" end of the range than to WT. If positions are close to the thresholds for moderate, adverse, or WT/Inactive split, the assignment flagged, indicating that a manual inspection of the data is needed to determine the best position class.
+<img width="2088" height="49" alt="image" src="https://github.com/user-attachments/assets/abfa2ed6-a9c2-4a8b-9037-a18f93d75cbb" />
+
 Reference: Sreenivasan, S., Fontes, J. D., and Swint-Kruse, L. 2025. 'Dissecting the effects of single amino acid substitutions in SARS-CoV-2 Mpro', Protein Science 34, e70225.
 
 >>Toggle: Around 2/3 of the substitutions lack detectable activity.
 Reference: Miller, M., Y. Bromberg, and L. Swint-Kruse. 2017. 'Computational predictors fail to identify amino acid substitution effects at rheostat positions', Sci Rep, 7: 41329.
 
->>WT/Inactive split: Half of the substitutions have WT-like outcomes and the other half lack detectable activity.  This may be a hallmark of altered protein stability. These are a special case of "binary" positions (for which substitutions fall in only 2 bins).
+>>WT/Inactive split: Half of the substitutions have WT-like outcomes and the other half lack detectable activity.  This may be a hallmark of altered protein stability. These are a special case of "binary" positions (for which substitutions fall in only 2 bins).If positions are close to the thresholds for moderate, adverse, or WT/Inactive split, the assignment flagged, indicating that a manual inspection of the data is needed to determine the best position class.
 Reference: Page, B. M., T. A. Martin, C. L. Wright, L. A. Fenton, M. T. Villar, Q. Tang, A. Artigues, A. Lamb, A. W. Fenton, and L. Swint-Kruse. 2022. 'Odd one out? Functional tuning of Zymomonas mobilis pyruvate kinase is narrower than its allosteric, human counterpart', Protein Sci, 31: e4336.
 
 >>Enhancing: At least 80% of substitutions enhance the measured parameter relative to the upper limit of the neutral bin.
