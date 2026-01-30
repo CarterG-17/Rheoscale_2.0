@@ -1,6 +1,10 @@
 # Rheoscale_2.0
 ### Description
 RheoScale 2.0 (a.k.a. "rheoscale") is a python-based calculator that identifies overall behaviors for individual protein positions, using their respective sets of amino acid substitutions (e.g., all 19 substitutions at a given position). For each amino acid substitution, a measured experimental value (e.g., enzyme activity, fluorescence, binding, etc.) is input using a CSV file OR is user-input.  For each position, the range and types of outcomes for its substitution set are used to assign one of several classes: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, or WT/inactive. The rheoscale script also generates histograms and a summary output file that can be used for further analyses.
+>>The theory, rationale, and specifics of data analyses utilized in this calculator are explained in more detail in the associated 2018 publication.
+Hodges, A. M., A. W. Fenton, L. L. Dougherty, A. C. Overholt, and L. Swint-Kruse. 2018. 'RheoScale: A tool to aggregate and quantify experimentally determined substitution outcomes for multiple variants at individual protein positions', Hum Mutat, 39: 1814-26.
+<img width="2453" height="80" alt="image" src="https://github.com/user-attachments/assets/b0d11c9c-d778-47d0-bef6-ac7d0cf1bc91" />.  A citation for Rheoscale2.0 will be forthcoming.
+
 
 ## Usage/Quick Start
 
