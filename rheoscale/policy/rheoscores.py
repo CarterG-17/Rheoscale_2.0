@@ -13,15 +13,12 @@ def calculate_rheoscores(config: RheoscaleConfig, DMS_values: pd.DataFrame, hist
         DMS_values_one_pos = DMS_values[DMS_values[config.columns['position']] == position]
         rheo_scores: RheoScores = compute_all_rheo_scores(position, config, DMS_values_one_pos, histogram_factory)
         
-        rheo_scores.assignment = make_assignment(config, rheo_scores)
+        rheo_scores.assignment, rheo_scores.flag = make_assignment(config, rheo_scores)
 
         position_rows.append(asdict(rheo_scores))
 
     position_df = pd.DataFrame(position_rows, columns=POSITION_COLUMNS)
 
-
-
-    position_df.to_csv(r'C:\Lab_code\Rheoscale 2.0\RheoScale2.0-Dec25\Carters_runs\Cart_test.csv', index=False)
 
     return position_df
     
@@ -33,19 +30,19 @@ def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->
     
     #only things with mre than 6 muts get a score
     if rheo_scores.num_of_variants <5:
-        return None
+        return None, False
 
     if rheo_scores.neutral_score >= running_config.neutral_threshold:
-        return 'neutral'
+        return 'neutral', False
 
     if rheo_scores.toggle_score >= running_config.toggle_threshold:
-        return 'toggle'
+        return 'toggle', False
 
     if rheo_scores.enhancing_score >= running_config.enhancing_threshold:
-        return 'enhancing'
+        return 'enhancing', False
     
     if rheo_scores.weighted_rheostat_score >= running_config.rheostat_threshold:
-        return 'rheostat'
+        return 'rheostat', False
     
     wild_type = running_config.WT_val
 
@@ -55,11 +52,29 @@ def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->
         dead = running_config.max_val
 
     if 0.4 < rheo_scores.toggle_score < running_config.toggle_threshold and 0.4 < rheo_scores.neutral_score < running_config.neutral_threshold and  rheo_scores.weighted_rheostat_score < 0.3:
-        return "WT/inactive"
+        if rheo_scores.toggele_score >0.35 and  rheo_scores.weighted_rheostat_score <0.35 and rheo_scores.neutral_score>0.35:
+            return "WT/inactive", True 
+        else:
+            return "WT/inactive", False
+
+
+    ten_percent_of =  np.abs(running_config.max_val-running_config.min_val)*0.1
 
     if np.abs(rheo_scores.average - dead) < np.abs(rheo_scores.average - wild_type):
-        return 'adverse'
+        if ten_percent_of > np.abs(np.abs(rheo_scores.average - dead) - np.abs(rheo_scores.average - wild_type)):
+            return'adverse', True
+        else:
+            return 'adverse', False
+        
     if np.abs(rheo_scores.average - dead) > np.abs(rheo_scores.average - wild_type): 
-        return 'moderate'
+        if ten_percent_of > np.abs(np.abs(rheo_scores.average - dead) - np.abs(rheo_scores.average - wild_type)):
+            return'adverse', True
+        else:
+            return 'moderate', False
+    
+    
+
+
+    
     
     return 'unclassified'

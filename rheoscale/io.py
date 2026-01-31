@@ -32,7 +32,7 @@ def write_outputs(running_config: RheoscaleConfig, position_df: pd.DataFrame):
     
     json_path = out_dir / f'{running_config.protein_name}_running_config.json'
     #make_config_output 
-    print('hello')
+    
     running_config.to_json(json_path)
 
     #make data sheet output 
@@ -57,7 +57,7 @@ def write_outputs(running_config: RheoscaleConfig, position_df: pd.DataFrame):
     hist_list = position_df['histogram'].to_list()
     plot_output = out_dir / f'{running_config.protein_name}_plots'
     os.makedirs(plot_output, exist_ok=True)
-    print(running_config.WT_val)
+    
     plot_all_positions(position_list, hist_list, running_config.dead_extremum, running_config.WT_val,dead_value ,plot_output, running_config.neutral_binsize,running_config.protein_name, is_hist_plots, is_even_bins=running_config.even_bins)
 
 

@@ -60,9 +60,10 @@ class RheoScores:
     average: float = None
     st_dev: float= None
     assignment: str = None
+    flag: bool = None
 
     def __setattr__(self, name, value):
-        if name == 'position' or name == 'num_of_variants' or name == 'histogram':
+        if name == 'position' or name == 'num_of_variants' or name == 'histogram' or name =='flag':
             pass
         elif name == 'assignment':
             if value not in ['neutral', 'toggle', 'rheostat', 'enhancing', 'adverse', 'WT/inactive','moderate', None, 'unclassified']:

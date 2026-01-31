@@ -12,5 +12,6 @@ POSITION_COLUMNS = [
     'average',
     'st_dev',
     'assignment',
+    'flag'
 ]
 

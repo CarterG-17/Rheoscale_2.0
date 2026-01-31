@@ -95,7 +95,7 @@ def make_tuning_plot_one_pos(hist_data: HistogramData , dead_extremum, WT_value,
 
         fig.tight_layout()
         plt.savefig(rf'{path}\{tle}.png')
-        print(fr'#####saved to {path}\{tle}.png')
+        
         plt.close()
 
         
