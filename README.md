@@ -244,8 +244,8 @@ if an input file is not given in the pandas DataFrame then a data frame can be a
 This package is under a GNU AFFERO GENERAL PUBLIC LICENSE
 
 ## Contact 
-For scientific questions about the dataset, please contact the senior faculty related to this project, Dr. Liskin Swint-Kruse 
-(lswint-kruse@kumc.edu)
+For scientific questions about the dataset, please contact Dr. Liskin Swint-Kruse 
+(lswint-kruse_at_kumc_dot_edu)
 
-For techniqical python coding questions, please contact the primary coder to this project Carter Gray (cartergray-at-ku-dot-edu)
+For techniqical Python coding questions, please contact Carter Gray (cartergray-at-ku-dot-edu)
 
