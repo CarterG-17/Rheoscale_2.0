@@ -19,7 +19,7 @@ Rheoscale2.0 has been implemented 3 different formats.
 #### Position classes:  
 At least 5 amino acid variants are required for each position to be analyzed.  RheoScale first uses the value and error for the wild-type variant to determine whether a position is “neutral” or “non-neutral”.  The variant sets for non-neutral positions are then assessed with a modified histogram analysis. 
 
-The hierarchical logic used to define position classes follows the order: Neutral>Toggle>Rheostat>Moderate/Adverse/WT-Inactive_split/Enhancing.  
+The hierarchical logic used to define position classes follows the order: Neutral>Toggle/Enhancing>Rheostat>WT-Inactive_split>Moderate/Adverse.
 
 The descriptions of these position classes, as well as the publications describing their default score thresholds, are:
 >>Neutral: At least 70% of substitutions have WT-like outcomes for the parameter measured.  The neutral score for each position, which is used to assign neutral positions, is calculated separately from all other scores, by using a neutral bin that is centered on the wild-type value and is (usually) independent of the histogram bin size.
