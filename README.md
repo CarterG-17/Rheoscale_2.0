@@ -67,8 +67,8 @@ g) Weighted versus unweighted rheostat scores.  Unweighted rheostat scores are c
 
 
 ## Installation Instructions
-### If you are new to python
-How to use this python version of the RheoScale calculator
+### If you are new to Python
+How to use this Python version of the RheoScale calculator
 Python Requirements:  You need Python 3 or later and a few standard Python packages.  If you don’t have Python installed:
 -	Go to https://www.python.org/downloads/
 -	Download the latest Python 3 version (or higher).
@@ -87,8 +87,8 @@ That’s all the setup you need !!
 
 
 
-### To install rheoscale
-to install python version run
+### To install RheoScale2.0
+to install Python version run
 ```bash
 python pip install rheoscale
 ```
