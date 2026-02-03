@@ -77,4 +77,4 @@ def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->
 
     
     
-    return 'unclassified'
+    return 'unclassified', False

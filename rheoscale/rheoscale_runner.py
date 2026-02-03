@@ -53,6 +53,9 @@ class RheoscaleRunner:
         
         data_from_dms = data_from_dms.dropna(how="all")
 
+        if dms_data[self.user_config.columns['value']].isna().any():
+            raise ValueError('The input file must have values in the functions colums')
+        
         if self.user_config.log_scale:
             data_from_dms = self.transform_raw_data(data_from_dms)
 
