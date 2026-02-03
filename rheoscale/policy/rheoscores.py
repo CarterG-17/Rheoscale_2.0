@@ -68,7 +68,7 @@ def make_assignment(running_config: RheoscaleConfig, rheo_scores: RheoScores) ->
         
     if np.abs(rheo_scores.average - dead) > np.abs(rheo_scores.average - wild_type): 
         if ten_percent_of > np.abs(np.abs(rheo_scores.average - dead) - np.abs(rheo_scores.average - wild_type)):
-            return'adverse', True
+            return'moderate', True
         else:
             return 'moderate', False
     
