@@ -1,6 +1,6 @@
 # Rheoscale_2.0
 ### Description
-RheoScale 2.0 (a.k.a. "rheoscale") is a python-based calculator that identifies overall behaviors for individual protein positions, using their respective sets of amino acid substitutions (e.g., all 19 substitutions at a given position). For each amino acid substitution, a measured experimental value (e.g., enzyme activity, fluorescence, binding, etc.) is input using a CSV file OR is user-input.  For each position, the range and types of outcomes for its substitution set are used to assign one of several classes: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, or WT/inactive. The rheoscale script also generates histograms and a summary output file that can be used for further analyses.
+RheoScale 2.0 (a.k.a. "rheoscale") is a Python-based calculator that identifies overall behaviors for individual protein positions, using their respective sets of amino acid substitutions (e.g., all 19 substitutions at a given position). For each amino acid substitution, a measured experimental value (e.g., enzyme activity, fluorescence, binding, etc.) is input using a CSV file OR is user-input.  For each position, the range and types of outcomes for its substitution set are used to assign one of several classes: Neutral, Rheostat, Toggle, Moderate, Adverse, Enhancing, or WT/inactive. The rheoscale script also generates histograms and a summary output file that can be used for further analyses.
 >>Rheoscale2.0 is an expansion of a calculator first published in 2018.  The theory, rationale, and specifics of data analyses utilized in this calculator are explained in more detail in the associated publication:
 Hodges, A. M., A. W. Fenton, L. L. Dougherty, A. C. Overholt, and L. Swint-Kruse. 2018. 'RheoScale: A tool to aggregate and quantify experimentally determined substitution outcomes for multiple variants at individual protein positions', Hum Mutat, 39: 1814-26.
 >>
@@ -19,7 +19,7 @@ Rheoscale2.0 has been implemented 3 different formats.
 #### Position classes:  
 At least 5 amino acid variants are required for each position to be analyzed.  RheoScale first uses the value and error for the wild-type variant to determine whether a position is “neutral” or “non-neutral”.  The variant sets for non-neutral positions are then assessed with a modified histogram analysis. 
 
-The hierarchical logic used to define position classes follows the order: Neutral>Toggle>Rheostat>Moderate/Adverse/WT-Inactive_split/Enhancing.  
+The hierarchical logic used to define position classes follows the order: Neutral>Toggle/Enhancing>Rheostat>WT-Inactive_split>Moderate/Adverse.
 
 The descriptions of these position classes, as well as the publications describing their default score thresholds, are:
 >>Neutral: At least 70% of substitutions have WT-like outcomes for the parameter measured.  The neutral score for each position, which is used to assign neutral positions, is calculated separately from all other scores, by using a neutral bin that is centered on the wild-type value and is (usually) independent of the histogram bin size.
@@ -67,8 +67,8 @@ g) Weighted versus unweighted rheostat scores.  Unweighted rheostat scores are c
 
 
 ## Installation Instructions
-### If you are new to python
-How to use this python version of the RheoScale calculator
+### If you are new to Python
+How to use this Python version of the RheoScale calculator
 Python Requirements:  You need Python 3 or later and a few standard Python packages.  If you don’t have Python installed:
 -	Go to https://www.python.org/downloads/
 -	Download the latest Python 3 version (or higher).
@@ -87,8 +87,8 @@ That’s all the setup you need !!
 
 
 
-### To install rheoscale
-to install python version run
+### To install RheoScale2.0
+to install Python version run
 ```bash
 python pip install rheoscale
 ```
@@ -244,8 +244,8 @@ if an input file is not given in the pandas DataFrame then a data frame can be a
 This package is under a GNU AFFERO GENERAL PUBLIC LICENSE
 
 ## Contact 
-For scientific questions about the dataset, please contact the senior faculty related to this project, Dr. Liskin Swint-Kruse 
-(lswint-kruse@kumc.edu)
+For scientific questions about the dataset, please contact Dr. Liskin Swint-Kruse 
+(lswint-kruse_at_kumc_dot_edu)
 
-For techniqical python coding questions, please contact the primary coder to this project Carter Gray (cartergray-at-ku-dot-edu)
+For techniqical Python coding questions, please contact Carter Gray (cartergray-at-ku-dot-edu)
 
