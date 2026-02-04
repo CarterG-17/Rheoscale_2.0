@@ -53,7 +53,7 @@ class RheoscaleRunner:
         
         data_from_dms = data_from_dms.dropna(how="all")
 
-        if dms_data[self.user_config.columns['value']].isna().any():
+        if data_from_dms[self.user_config.columns['value']].isna().any():
             raise ValueError('The input file must have values in the functions colums')
         
         if self.user_config.log_scale:
@@ -129,10 +129,10 @@ class RheoscaleRunner:
         if self.running_config.dead_extremum == 'Min':
             dead = np.linspace(start=self.running_config._true_min, stop=bins_size+self.running_config.min_val, num=1)
             remaining= np.linspace(start=bins_size+self.running_config.min_val, stop=self.running_config.max_val, num=self.running_config.number_of_bins)
-            if dead != self.running_config.min_val:
-                bin_edges = np.concatenate([dead, remaining])
-            else: 
-                bin_edges = remaining
+            dead_value = dead[0]
+            #if dead_value != self.running_config.min_val:
+            bin_edges = np.concatenate([dead, remaining])
+            
         else: 
              dead = np.linspace(start=self.running_config._true_max, stop=bins_size+self.running_config.max_val, num=1)
              remaining= np.linspace(start=bins_size+self.running_config.min_val, stop=self.running_config.max_val, num=self.running_config.number_of_bins)

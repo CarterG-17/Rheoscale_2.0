@@ -63,12 +63,12 @@ class RheoscaleConfig:
     toggle_threshold: ClassVar[float]= 0.64
     
     columns: Dict[ColumnKey, str] = field(
-        default_factory=lambda: MappingProxyType({
+        default_factory=lambda: {
             "position": "Position",
             "substitution": 'Substitution',
             "value": 'Value',
             "error": 'Error'
-        }), metadata= {'label': 'Name of Columns'})
+        }, metadata= {'label': 'Name of Columns'})
     
 
 
