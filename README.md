@@ -141,7 +141,7 @@ Simply put there are 2 steps to running the python rheoscale
 ### CLI version
 To see the inputs of the CLI version run:
 ```bash
-python -m rheoscale -h
+python -m rheoscale.cli -h
 ```
 
 To use the command line interface of rheoscale you can run: 
