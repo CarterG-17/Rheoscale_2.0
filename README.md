@@ -146,7 +146,7 @@ python -m rheoscale.cli -h
 
 To use the command line interface of rheoscale you can run: 
 ```bash
-python -m rheoscale protein_name --input_file (--opitional_inputs)
+python -m rheoscale.cli protein_name --input_file (--opitional_inputs)
 ```
 ### Excel version
 
