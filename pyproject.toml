@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rheoscale"
-version = "0.1.0"
+version = "0.1.2"
 description = "RheoScale implementation for DMS analysis"
 authors = [{ name = "Carter Gray, Liskin Swint-Kruse" }]
 requires-python = ">=3.9"
