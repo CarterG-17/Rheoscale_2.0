@@ -13,5 +13,5 @@ dependencies = ["numpy", "pandas", "matplotlib"]
 [project.scripts]
 rheoscale = "rheoscale.cli:main"
 
-[tool.setuptools]
-packages = ["rheoscale"]
+[tool.setuptools.packages.find]
+include = ["rheoscale*"]
